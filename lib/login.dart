@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:android/dashborad.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class login extends StatefulWidget {
+  const login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<login> {
+  final _FormState = GlobalKey<FormState>();
+  TextEditingController _user = TextEditingController();
+  TextEditingController _pass = TextEditingController();
+
+  Future _masuk() async {
+    print('ini fungsi masuk');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Aplikasi',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [Colors.blue, Colors.purple]),
           ),
         ),
@@ -26,7 +36,7 @@ class _LoginState extends State<Login> {
           onPressed: () {
             print('ini adalah tombol menu');
           },
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           color: Colors.white,
         ),
         actions: [
@@ -34,72 +44,85 @@ class _LoginState extends State<Login> {
             onPressed: () {
               print('ini setting');
             },
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             color: Colors.white,
           ),
           IconButton(
             onPressed: () {
               print('ini tombol cari');
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             color: Colors.white,
           ),
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(50.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 100,
-              backgroundImage: NetworkImage(
-                  'https://cdn.7tv.app/emote/01FKKW7C1G0008TM5NY9QEFEDW/4x.webp'),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                labelText: 'Username',
-                prefixIcon: Icon(Icons.person),
+        padding: const EdgeInsets.all(50.0),
+        child: Form(
+          key: _FormState,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                radius: 100,
+                backgroundImage: NetworkImage(
+                    'https://cdn.7tv.app/emote/01FKKW7C1G0008TM5NY9QEFEDW/4x.webp'),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                labelText: 'Password',
-                prefixIcon: Icon(Icons.lock),
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                print('ini tombol masuk');
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-                backgroundColor: Colors.blueAccent,
-                shadowColor: Colors.blueGrey,
-                elevation: 10,
+              TextFormField(
+                validator: (value) {
+                  if (value == '') {
+                    return "username tidak boleh kosong";
+                  }
+                  return null;
+                },
+                controller: _user,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0)),
+                    labelText: 'Username',
+                    prefixIcon: const Icon(Icons.person)),
               ),
-              child: Text(
-                'MASUK',
-                style: TextStyle(color: Colors.white),
+              const SizedBox(
+                height: 10,
               ),
-            ),
-          ],
+              TextFormField(
+                validator: (value) {
+                  if (value == '') {
+                    return "password tidak boleh kosong";
+                  }
+                  return null;
+                },
+                controller: _pass,
+                obscureText: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0)),
+                    labelText: 'Password',
+                    prefixIcon: const Icon(Icons.password)),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    if (_FormState.currentState!.validate()) {
+                      _masuk();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      backgroundColor: Colors.blueAccent,
+                      shadowColor: Colors.blueGrey,
+                      elevation: 10),
+                  child: const Text(
+                    'MASUK',
+                    style: TextStyle(color: Color.fromARGB(255, 100, 43, 43)),
+                  ))
+            ],
+          ),
         ),
       ),
     );
